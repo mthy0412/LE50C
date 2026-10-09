@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thư gửi LE50C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf7fb; --panel:#ffffff; --paper:#fffdfb; --border:#e6dce8; --text:#2a2233; --muted:#7a6f85;
+  --accent:#c2358a; --accent-soft:#f6d9ea; --link:#7a3fc4;
+  --l0:#efe7f1; --l1:#e8c3e0; --l2:#d98ccb; --l3:#c2358a; --l4:#8a1f66;
+  --shadow:0 10px 40px rgba(90,40,100,.12);
+  --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --serif:'Lora',Georgia,'Times New Roman',serif;
+  --script:'Dancing Script','Segoe Script',cursive;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1117; --panel:#161b22; --paper:#171c26; --border:#30363d; --text:#e8e4ee; --muted:#8b949e;
+    --accent:#ff7eb6; --accent-soft:#3a1f33; --link:#d2a8ff;
+    --l0:#1d232d; --l1:#4a2a47; --l2:#8a3f7e; --l3:#d2569f; --l4:#ff9ccc;
+    --shadow:0 10px 40px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1117; --panel:#161b22; --paper:#171c26; --border:#30363d; --text:#e8e4ee; --muted:#8b949e;
+  --accent:#ff7eb6; --accent-soft:#3a1f33; --link:#d2a8ff;
+  --l0:#1d232d; --l1:#4a2a47; --l2:#8a3f7e; --l3:#d2569f; --l4:#ff9ccc;
+  --shadow:0 10px 40px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{height:100%;scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:6px}
+
+/* ---------- Envelope intro ---------- */
+#intro{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:24px;transition:opacity .8s ease,visibility .8s}
+#intro.gone{opacity:0;visibility:hidden}
+.env-hint{margin:0;color:var(--muted);font-size:.95rem;text-align:center;transition:opacity .4s}
+.env{position:relative;width:min(320px,78vw);aspect-ratio:3/2;border:0;background:none;padding:0;perspective:900px}
+.env .back,.env .front,.env .flap,.env .card{position:absolute;left:0;right:0}
+.env .back{inset:0;background:var(--accent-soft);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow)}
+.env .card{left:8%;right:8%;top:8%;height:86%;background:var(--paper);border:1px solid var(--border);border-radius:6px;padding:16px 18px;transition:transform .9s .55s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;justify-content:center;gap:6px;text-align:center}
+.env .card b{font-family:var(--serif);font-weight:500;font-size:1.05rem}
+.env .card i{font-family:var(--script);font-style:normal;color:var(--accent);font-size:1.3rem}
+.env .front{inset:0;border-radius:10px;overflow:hidden;pointer-events:none}
+.env .front::before{content:"";position:absolute;inset:0;background:var(--panel);clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);border:1px solid var(--border)}
+.env .front::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 49.6%,var(--border) 50%,transparent 50.6%) left/50% 100% no-repeat,linear-gradient(45deg,transparent 49.6%,var(--border) 50%,transparent 50.6%) right/50% 100% no-repeat;opacity:.0}
+.env .flap{top:0;height:58%;background:var(--panel);border:1px solid var(--border);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .7s ease,z-index 0s .35s;z-index:3;border-radius:10px 10px 0 0}
+.env .seal{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);z-index:4;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:1.3rem;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .35s,opacity .35s}
+.env:hover .seal{transform:translate(-50%,-50%) scale(1.1)}
+.env.open .flap{transform:rotateX(180deg);z-index:1}
+.env.open .card{transform:translateY(-62%)}
+.env.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+.env.open + .env-hint{opacity:0}
+
+/* ---------- Top bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.bar-in{max-width:880px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+.crumb{flex:1;min-width:0;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb a{color:var(--link);text-decoration:none}
+.crumb span{color:var(--muted)}
+.crumb strong{font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.88rem;font-weight:500;transition:border-color .2s,background .2s}
+.btn:hover{border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.btn .count{border-left:1px solid var(--border);padding-left:8px;color:var(--muted)}
+.icon-btn{padding:6px 10px}
+
+/* ---------- Layout ---------- */
+main{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:36px 20px 80px}
+.paper{background:var(--paper);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.file-head{display:flex;align-items:center;gap:10px;padding:10px 18px;background:var(--panel);border-bottom:1px solid var(--border);font-size:.85rem;color:var(--muted)}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--l1)}
+.letter{padding:clamp(24px,6vw,64px) clamp(20px,6vw,72px) clamp(28px,6vw,64px)}
+.letter h1{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,5.2vw,2.5rem);line-height:1.25;margin:0 0 6px;letter-spacing:-.01em}
+.date{margin:0 0 34px;color:var(--muted);font-size:.92rem;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.letter p{font-family:var(--serif);font-size:clamp(1.02rem,2.6vw,1.16rem);line-height:1.95;margin:0 0 1.3em;max-width:62ch}
+.letter p.lead{font-style:italic;font-size:clamp(1.12rem,3vw,1.3rem);color:var(--accent)}
+.name{display:inline;border:0;background:linear-gradient(var(--accent-soft),var(--accent-soft)) 0 100%/100% 2px no-repeat;padding:0 1px;font:inherit;color:inherit;font-weight:500;cursor:pointer;transition:background-size .25s,color .25s;border-radius:2px}
+.name:hover,.name:focus-visible{background-size:100% 100%;color:var(--text)}
+.sign{margin-top:36px;color:var(--muted);font-family:var(--serif)}
+.sign .sig{display:block;font-family:var(--script);font-size:2.4rem;color:var(--accent);line-height:1.2;margin-top:4px}
+.hint{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:-.4em}
+
+/* ---------- Memory graph ---------- */
+.graph{margin-top:28px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px}
+.graph h2{font-family:var(--sans);font-size:1.05rem;font-weight:600;margin:0 0 4px}
+.graph p.cap{margin:0 0 16px;color:var(--muted);font-size:.9rem}
+.scroller{overflow-x:auto;padding-bottom:8px}
+#grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);grid-auto-columns:12px;gap:3px;width:max-content}
+#grid button{width:12px;height:12px;padding:0;border:0;border-radius:3px;background:var(--l0);transition:transform .15s,background .3s}
+#grid button:hover{transform:scale(1.5)}
+#grid button[data-l="1"]{background:var(--l1)}
+#grid button[data-l="2"]{background:var(--l2)}
+#grid button[data-l="3"]{background:var(--l3)}
+#grid button[data-l="4"]{background:var(--l4)}
+.legend{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.82rem;color:var(--muted)}
+.legend .sw{display:inline-flex;gap:3px;align-items:center}
+.legend .sw i{width:12px;height:12px;border-radius:3px;display:inline-block}
+#tip{position:fixed;z-index:60;pointer-events:none;background:var(--text);color:var(--bg);font-size:.8rem;padding:5px 9px;border-radius:6px;opacity:0;transform:translate(-50%,-130%);transition:opacity .12s;white-space:nowrap}
+
+/* ---------- Heart card ---------- */
+.heart-card{margin-top:28px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:34px 22px 30px;text-align:center}
+.heart-card h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin:0 0 4px}
+.heart-card p{margin:0 0 20px;color:var(--muted);font-size:.92rem}
+.big-heart{background:none;border:0;padding:8px;line-height:0;transition:transform .15s}
+.big-heart svg{width:112px;height:112px;fill:var(--accent);filter:drop-shadow(0 8px 18px color-mix(in srgb,var(--accent) 45%,transparent));animation:beat 1.6s ease-in-out infinite}
+.big-heart:active{transform:scale(.9)}
+.big-heart.pop svg{animation:pop .45s ease}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.08)}28%{transform:scale(1)}42%{transform:scale(1.06)}70%{transform:scale(1)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.hcount{margin-top:14px;font-weight:600;color:var(--accent)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:34px}
+
+/* ---------- Effects ---------- */
+.fl{position:fixed;z-index:70;pointer-events:none;font-size:1.3rem;will-change:transform,opacity}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--panel);border:1px solid var(--accent);color:var(--text);padding:10px 18px;border-radius:999px;font-size:.92rem;box-shadow:var(--shadow);opacity:0;transition:opacity .25s,transform .25s;z-index:80;pointer-events:none;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body class="locked">
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- Phong bì mở đầu -->
+<section id="intro" aria-label="Phong bì thư">
+  <button class="env" id="env" aria-label="Mở thư gửi LE50C">
+    <div class="back"></div>
+    <div class="card"><b>Gửi LE50C</b><i>và những người bạn của mình</i></div>
+    <div class="front"></div>
+    <div class="flap"></div>
+    <div class="seal">♥</div>
+  </button>
+  <p class="env-hint">Chạm vào phong bì để mở thư</p>
+</section>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="crumb"><a href="#top">LE50C</a> <span>/</span> <strong>thu-chia-tay.md</strong></div>
+    <button class="btn" id="star" aria-pressed="false" title="Lưu giữ kỷ niệm"><span id="starIcon">☆</span> <span id="starText">Lưu giữ</span> <span class="count" id="starCount">0</span></button>
+    <button class="btn icon-btn" id="theme" aria-label="Đổi giao diện sáng/tối">◐</button>
+  </div>
+</header>
+
+<main id="top">
+  <article class="paper">
+    <div class="file-head"><span class="dots"><i></i><i></i><i></i></span> thu-chia-tay.md · cập nhật ngày 9/10/2026</div>
+    <div class="letter">
+      <h1>Gửi LE50C và những người bạn của mình</h1>
+      <p class="date">Ngày 9 tháng 10 năm 2026</p>
+
+      <p class="lead">Có những cuộc gặp gỡ mà khi bắt đầu, chúng ta chẳng thể biết rằng sau này mình sẽ nhớ chúng đến nhường nào.</p>
+
+      <p>Gửi tập thể LE50C, cảm ơn mọi người vì đã góp mặt trong quãng đời sinh viên của mình. Cảm ơn những buổi học, những câu chuyện, những tiếng cười và cả những khoảnh khắc tưởng chừng rất bình thường nhưng rồi có thể sẽ trở thành ký ức đáng nhớ. Mình vui vì đã có cơ hội được gặp gỡ và trở thành một phần của tập thể này.</p>
+
+      <p id="names">Và đặc biệt, gửi
+        <button class="name">Trí</button>,
+        <button class="name">Huyền Trâm</button>,
+        <button class="name">Quỳnh Trâm</button>,
+        <button class="name">Lê Thảo</button>,
+        <button class="name">Huỳnh Tiên</button>,
+        <button class="name">Uyên Đỗ</button>,
+        <button class="name" data-n="Ông Hổ">Ông Hổ (Thúy Vy)</button> và
+        <button class="name">Huyền Trang</button>.
+      </p>
+      <p class="hint">Thử chạm vào từng cái tên nhé.</p>
+
+      <p>Mình nghĩ mình khá may mắn khi gặp được một hội bạn vừa năng động, vừa thú vị, mỗi người một màu sắc, chẳng ai giống ai. Cảm ơn mọi người vì đã khiến những ngày tháng đại học trở nên nhiều màu sắc hơn, vì những câu chuyện bất tận, những trò vui bất chợt và cả nguồn năng lượng mà có lẽ sau này mình sẽ khó tìm lại được ở một nơi nào khác.</p>
+
+      <p>Sắp tới, mình sẽ bắt đầu một hành trình mới, đến một nơi xa hơn và làm quen với những điều hoàn toàn khác biệt. Mình háo hức, nhưng thú thật, cũng có chút tiếc nuối khi nghĩ đến việc mình sẽ không còn dễ dàng gặp mọi người như trước. Dù vậy, mình tin rằng trưởng thành vốn là như thế: chúng ta phải bước tiếp, nhưng không có nghĩa là phải quên đi những người đã cùng mình đi qua một đoạn đường.</p>
+
+      <p>Mình không mong mọi thứ sẽ mãi giữ nguyên như hiện tại. Mình chỉ mong rằng sau này, dù mỗi người có cuộc sống riêng, chúng ta vẫn có thể gặp lại nhau, kể nhau nghe những câu chuyện mới và cười thật thoải mái như chưa từng có khoảng cách nào giữa chúng ta.</p>
+
+      <p>Chúc LE50C luôn giữ được sự nhiệt huyết của mình. Chúc hội bạn của mình sẽ luôn vui vẻ, hết mình với tuổi trẻ và làm được những điều mà bản thân mong muốn.</p>
+
+      <p>Cảm ơn vì đã xuất hiện trong thanh xuân của mình. Hẹn gặp lại mọi người ở một phiên bản trưởng thành hơn, với nhiều câu chuyện hay ho hơn để kể cho nhau nghe.</p>
+
+      <div class="sign">Thân thương,<span class="sig">Tống Mai Thy</span></div>
+    </div>
+  </article>
+
+  <section class="graph" aria-labelledby="gh">
+    <h2 id="gh">Một năm của chúng mình</h2>
+    <p class="cap">Mỗi ô vuông là một ngày. Chạm vào để thắp sáng thêm một kỷ niệm.</p>
+    <div class="scroller"><div id="grid" role="group" aria-label="Biểu đồ kỷ niệm"></div></div>
+    <div class="legend">
+      <span id="sum">0 kỷ niệm đã được thắp sáng</span>
+      <span class="sw">Ít <i style="background:var(--l0)"></i><i style="background:var(--l1)"></i><i style="background:var(--l2)"></i><i style="background:var(--l3)"></i><i style="background:var(--l4)"></i> Nhiều</span>
+    </div>
+  </section>
+
+  <section class="heart-card" aria-labelledby="hh">
+    <h2 id="hh">Gửi một trái tim cho LE50C</h2>
+    <p>Chạm vào trái tim, càng nhiều càng tốt.</p>
+    <button class="big-heart" id="bigHeart" aria-label="Gửi một trái tim">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </button>
+    <div class="hcount" id="hcount">Chưa có trái tim nào, hãy là người đầu tiên</div>
+  </section>
+
+  <footer>Viết bằng cả tấm lòng, gửi LE50C · 9/10/2026</footer>
+</main>
+
+<div id="tip"></div>
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s){return document.querySelector(s)};
+
+  /* ---------- Theme ---------- */
+  var root = document.documentElement;
+  try{ var t = localStorage.getItem('le50c-theme'); if(t) root.setAttribute('data-theme', t); }catch(e){}
+  $('#theme').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('le50c-theme', next); }catch(e){}
+  });
+
+  /* ---------- Toast ---------- */
+  var toast = $('#toast'), tt;
+  function say(msg){
+    toast.textContent = msg; toast.classList.add('show');
+    clearTimeout(tt); tt = setTimeout(function(){toast.classList.remove('show')}, 2400);
+  }
+
+  /* ---------- Floating emoji bursts ---------- */
+  var SET = ['💗','💖','💕','💞','🩷','💜','❤️','✨'];
+  function burst(x, y, n, set){
+    if(reduce) n = Math.min(n, 4);
+    set = set || SET;
+    for(var i=0;i<n;i++){
+      var el = document.createElement('span');
+      el.className = 'fl';
+      el.textContent = set[Math.floor(Math.random()*set.length)];
+      el.style.left = x+'px'; el.style.top = y+'px';
+      document.body.appendChild(el);
+      var a = Math.random()*Math.PI*2, d = 50+Math.random()*120;
+      var dx = Math.cos(a)*d, dy = Math.sin(a)*d - 90;
+      var rot = (Math.random()-.5)*120;
+      var anim = el.animate([
+        {transform:'translate(-50%,-50%) scale(.4)',opacity:1},
+        {transform:'translate(calc(-50% + '+dx+'px), calc(-50% + '+dy+'px)) rotate('+rot+'deg) scale(1.1)',opacity:1,offset:.6},
+        {transform:'translate(calc(-50% + '+(dx*1.1)+'px), calc(-50% + '+(dy+70)+'px)) rotate('+rot+'deg) scale(.8)',opacity:0}
+      ],{duration:1100+Math.random()*700,easing:'cubic-bezier(.2,.7,.3,1)'});
+      anim.onfinish = (function(e){return function(){e.remove()}})(el);
+    }
+  }
+  function confettiFromTop(){
+    for(var i=0;i<6;i++){
+      setTimeout(function(){ burst(Math.random()*innerWidth, innerHeight*.25+Math.random()*innerHeight*.3, 10); }, i*160);
+    }
+  }
+  document.addEventListener('pointerdown', function(e){
+    if(document.body.classList.contains('locked')) return;
+    if(e.target.closest('button,a')) return;
+    burst(e.clientX, e.clientY, 5);
+  });
+
+  /* ---------- Envelope ---------- */
+  var env = $('#env'), opened = false;
+  function openEnv(){
+    if(opened) return; opened = true;
+    env.classList.add('open');
+    var r = env.getBoundingClientRect();
+    burst(r.left+r.width/2, r.top+r.height/2, 14);
+    setTimeout(function(){
+      $('#intro').classList.add('gone');
+      document.body.classList.remove('locked');
+      window.scrollTo(0,0);
+    }, 1900);
+  }
+  env.addEventListener('click', openEnv);
+
+  /* ---------- Names ---------- */
+  var lines = ['Cảm ơn {n} vì đã ở đây 💗','Gửi {n} một cái ôm thật chặt 🤗','{n} ơi, hẹn gặp lại nhé ✨','{n} là một màu rất riêng của thanh xuân 🌸','Mong {n} luôn vui vẻ và làm được điều mình muốn 💜'];
+  var li = 0;
+  document.querySelectorAll('.name').forEach(function(b){
+    b.addEventListener('click', function(){
+      var n = b.getAttribute('data-n') || b.textContent;
+      var r = b.getBoundingClientRect();
+      burst(r.left+r.width/2, r.top+r.height/2, 10);
+      say(lines[li++ % lines.length].replace('{n}', n));
+    });
+  });
+
+  /* ---------- Star ---------- */
+  var star = $('#star'), count = 0;
+  star.addEventListener('click', function(){
+    var on = star.getAttribute('aria-pressed') !== 'true';
+    star.setAttribute('aria-pressed', on);
+    star.classList.toggle('on', on);
+    $('#starIcon').textContent = on ? '★' : '☆';
+    $('#starText').textContent = on ? 'Đã lưu giữ' : 'Lưu giữ';
+    count += on ? 1 : -1; $('#starCount').textContent = count;
+    if(on){
+      var r = star.getBoundingClientRect();
+      burst(r.left+r.width/2, r.top+r.height/2, 12, ['⭐','✨','💛']);
+      say('Đã lưu LE50C vào những điều đáng nhớ ⭐');
+    }
+  });
+
+  /* ---------- Memory graph ---------- */
+  var grid = $('#grid'), tip = $('#tip');
+  var END = new Date(2026,9,9), WEEKS = 40, total = WEEKS*7;
+  var seed = 50;
+  function rnd(){ seed = (seed*16807) % 2147483647; return seed/2147483647; }
+  var lit = 0;
+  function fmt(d){ return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); }
+  function label(l, d){ return (l===0 ? 'Chưa có kỷ niệm' : l+' kỷ niệm')+' · '+fmt(d); }
+  function updSum(){
+    var c = 0; grid.querySelectorAll('button').forEach(function(b){ if(+b.dataset.l>0) c++; });
+    lit = c; $('#sum').textContent = c+' ngày có kỷ niệm';
+  }
+  for(var i=total-1;i>=0;i--){
+    var d = new Date(END); d.setDate(END.getDate()-i);
+    var dow = d.getDay();
+    var r = rnd(), l = 0;
+    if(dow>0 && dow<6){ l = r>.82?4 : r>.62?3 : r>.4?2 : r>.22?1 : 0; }
+    else { l = r>.9?3 : r>.75?1 : 0; }
+    var b = document.createElement('button');
+    b.dataset.l = l; b.dataset.d = d.getTime();
+    b.setAttribute('aria-label', label(l,d));
+    grid.appendChild(b);
+  }
+  // Căn cột đầu theo thứ trong tuần
+  var firstDow = new Date(END.getTime()-(total-1)*864e5).getDay();
+  grid.firstChild.style.gridRow = (firstDow+1);
+  updSum();
+  function showTip(b){
+    var r = b.getBoundingClientRect();
+    tip.textContent = label(+b.dataset.l, new Date(+b.dataset.d));
+    tip.style.left = (r.left+r.width/2)+'px'; tip.style.top = r.top+'px'; tip.style.opacity = 1;
+  }
+  grid.addEventListener('pointerover', function(e){ var b = e.target.closest('button'); if(b) showTip(b); });
+  grid.addEventListener('pointerleave', function(){ tip.style.opacity = 0; });
+  grid.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    var l = Math.min(4, (+b.dataset.l)+1);
+    b.dataset.l = l; b.setAttribute('aria-label', label(l, new Date(+b.dataset.d)));
+    showTip(b); updSum();
+    var r = b.getBoundingClientRect();
+    burst(r.left+6, r.top+6, 3, ['💗','💖','💕']);
+  });
+  var sc = document.querySelector('.scroller'); sc.scrollLeft = sc.scrollWidth;
+
+  /* ---------- Big heart ---------- */
+  var bh = $('#bigHeart'), hc = 0;
+  var HEARTS = ['💗','💖','💕','💞','🩷','❤️','💜'];
+  bh.addEventListener('click', function(){
+    hc++;
+    $('#hcount').textContent = 'Đã gửi ' + hc + ' trái tim 💗';
+    bh.classList.remove('pop'); void bh.offsetWidth; bh.classList.add('pop');
+    var r = bh.getBoundingClientRect();
+    burst(r.left+r.width/2, r.top+r.height/2, 8, HEARTS);
+    if(hc === 10) say('10 trái tim rồi, LE50C chắc đang mỉm cười đó 💗');
+    if(hc === 30){ confettiFromTop(); say('30 trái tim! Hẹn gặp lại nhé LE50C 💌'); }
+  });
+
+  /* ---------- Ambient floating hearts ---------- */
+  var cv = $('#fx'), cx = cv.getContext('2d'), W, H, dots = [];
+  function size(){ var dpr = Math.min(devicePixelRatio||1, 2); W = cv.width = innerWidth*dpr; H = cv.height = innerHeight*dpr; }
+  size(); addEventListener('resize', size);
+  for(var k=0;k<(reduce?0:26);k++){
+    dots.push({x:Math.random(), y:Math.random(), r:1+Math.random()*2.2, s:.00006+Math.random()*.00012, p:Math.random()*6.28});
+  }
+  function frame(t){
+    cx.clearRect(0,0,W,H);
+    var col = getComputedStyle(root).getPropertyValue('--accent').trim() || '#ff7eb6';
+    cx.fillStyle = col;
+    dots.forEach(function(d){
+      d.y -= d.s*16; if(d.y < -.02){ d.y = 1.02; d.x = Math.random(); }
+      var a = .18 + .22*Math.sin(t/900 + d.p);
+      cx.globalAlpha = Math.max(0,a);
+      var sz = (8 + d.r*5) * (W/innerWidth);
+      cx.font = sz + 'px sans-serif'; cx.textAlign = 'center';
+      cx.fillText('\u2665', d.x*W + Math.sin(t/2500+d.p)*18, d.y*H);
+    });
+    requestAnimationFrame(frame);
+  }
+  if(!reduce) requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
